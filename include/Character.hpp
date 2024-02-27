@@ -28,9 +28,13 @@ public:
     void SetPosition(const glm::vec2& Position) { m_Transform.translation = Position; }
 
     // TODO: Implement the collision detection
-    [[nodiscard]] bool IfCollides(const std::shared_ptr<Character>& other) const {
-        (void) other;
-        return false;
+    bool IfCollides(const std::shared_ptr<Character>& other) const {
+            auto apos = this->GetPosition();
+            auto bpos = other->GetPosition();
+            if(  -50 < apos.x - bpos.x && apos.x - bpos.x < 50 && -50 <  apos.y - bpos.y && apos.y - bpos.y < 50 ){
+                return true;
+            }
+            return false;
     }
 
     // TODO: Add and implement more methods and properties as needed to finish Giraffe Adventure.

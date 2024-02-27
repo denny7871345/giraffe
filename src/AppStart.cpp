@@ -5,7 +5,7 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    m_Giraffe = std::make_shared<Character>(GA_RESOURCE_DIR"/Image/Character/gray.png");
+    m_Giraffe = std::make_shared<Character>("../Resources/Image/Character/giraffe.png");
     m_Giraffe->SetPosition({-112.5f, -140.5f});
     m_Giraffe->SetZIndex(50);
     m_Root.AddChild(m_Giraffe);
@@ -22,7 +22,6 @@ void App::Start() {
     for (int i = 0; i < 2; ++i) {
         beeImages.emplace_back(GA_RESOURCE_DIR"/Image/Character/bee_" + std::to_string(i + 1) + ".png");
     }
-
     m_Bee = std::make_shared<AnimatedCharacter>(beeImages);
     m_Bee->SetZIndex(5);
     m_Bee->SetVisible(false);
@@ -38,9 +37,20 @@ void App::Start() {
 
     // TODO: The counting down ball for phase 6
 
+    m_Ball = std::make_shared<AnimatedCharacter>(
+            std::vector<std::string>
+            {GA_RESOURCE_DIR"/Image/Character/ball-1.png",
+             GA_RESOURCE_DIR"/Image/Character/ball-2.png",
+             GA_RESOURCE_DIR"/Image/Character/ball-3.png",
+             GA_RESOURCE_DIR"/Image/Character/ball-ok.png"});
+    m_Ball->SetZIndex(5);
+    m_Ball->SetVisible(false);
+    m_Ball->SetLooping(false);
+    m_Ball->SetPlaying(false);
+    m_Root.AddChild(m_Ball);
     m_PRM = std::make_shared<PhaseResourceManger>();
     m_Root.AddChildren(m_PRM->GetChildren());
-
+    m_Root.AddChild(m_Ball);
 
     m_CurrentState = State::UPDATE;
 }

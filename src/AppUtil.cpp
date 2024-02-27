@@ -12,7 +12,7 @@ void App::ValidTask() {
     LOG_DEBUG("Validating the task {}", static_cast<int>(m_Phase));
     switch (m_Phase) {
         case Phase::CHANGE_CHARACTER_IMAGE:
-            if (m_Giraffe->GetImagePath() == GA_RESOURCE_DIR"/Image/Character/giraffe.png") {
+            if (m_Giraffe->GetImagePath() == "../Resources/Image/Character/giraffe.png") {
                 m_Phase = Phase::ABLE_TO_MOVE;
                 m_Giraffe->SetPosition({-112.5f, -140.5f});
 
@@ -43,6 +43,7 @@ void App::ValidTask() {
                     m_Phase = Phase::BEE_ANIMATION;
                     m_Giraffe->SetVisible(false);
                     m_Bee->SetVisible(true);
+                    m_Bee->SetLooping(true);
 
                     m_PRM->NextPhase();
                 }
@@ -56,6 +57,7 @@ void App::ValidTask() {
             isBeePlaying = m_Bee->IsPlaying();
 
             if (isBeeLooping && isBeePlaying) {
+
                 m_Phase = Phase::OPEN_THE_DOORS;
                 m_Giraffe->SetPosition({-112.5f, -140.5f});
                 m_Giraffe->SetVisible(true);
@@ -71,10 +73,11 @@ void App::ValidTask() {
 
         case Phase::OPEN_THE_DOORS:
             if (AreAllDoorsOpen(m_Doors)) {
+                m_Ball->SetVisible(true);
+                m_Ball->SetPlaying(true);
                 m_Phase = Phase::COUNTDOWN;
                 std::for_each(m_Doors.begin(), m_Doors.end(), [](const auto& door) { door->SetVisible(false); });
                 m_Giraffe->SetVisible(false);
-
                 m_PRM->NextPhase();
             } else {
                 LOG_DEBUG("At least one door is not open");
@@ -82,6 +85,7 @@ void App::ValidTask() {
             break;
 
         case Phase::COUNTDOWN:
+
             if (m_Ball->IfAnimationEnds()) {
                 LOG_DEBUG("Congratulations! You have completed Giraffe Adventure!");
                 m_CurrentState = State::END;
